@@ -6,6 +6,7 @@ import { useApiGet } from "./data/api";
 import { TestPlan, TestSuite } from "./types";
 import { useDispatch } from "react-redux";
 import { resetDirtyEdits } from "./data/edit";
+import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Heading } from "@chakra-ui/react";
 
 
 const TestPlanComponent = ({ plan }: { plan: TestPlan }) => {
@@ -14,15 +15,28 @@ const TestPlanComponent = ({ plan }: { plan: TestPlan }) => {
   </div>)
 }
 
+const TestPlansComponent = ({ test_plans }: { test_plans: Record<string, TestPlan> }) => {
+  return <>{Object.entries(test_plans).map(([i, plan]) => <TestPlanComponent plan={plan} key={i} />)}</>
+}
+
 const TestSuiteComponent = ({ testSuite }: { testSuite: TestSuite }) => {
-  const plans = Object.entries(testSuite.test_plans)
   const dispatch = useDispatch()
 
   return (<div key={testSuite.id}>
-    <h3>{testSuite.test_suite_name} | {plans.length} | <button onClick={() => {
-      dispatch(resetDirtyEdits(testSuite.id))
-    }}><EditOutlined /></button></h3>
-    {plans.map(([i, plan]) => <TestPlanComponent plan={plan} key={i} />)}
+    <Heading>
+      <>
+        {testSuite.test_suite_name}
+        |
+        {Object.entries(testSuite.test_plans).length}
+        |
+        <button onClick={() => {
+          dispatch(resetDirtyEdits(testSuite.id))
+        }}>
+          <EditOutlined />
+        </button>
+      </>
+    </Heading>
+
   </div>)
 }
 
@@ -46,13 +60,23 @@ function App() {
       {isLoading ? <Spinner />
         : error ? <div>Something went wrong! please refresh to try again.</div>
           : <>
-            <header className="App-header">
-              <p>
-                Edit <code> src / App.js </code> and save to reload.
-              </p>
-            </header>
             <ScreenEditTestSuite />
-            {Object.entries(data || {}).map(([id, testSuite]) => <TestSuiteComponent testSuite={testSuite} key={id} />)}
+
+            <Accordion defaultIndex={[0]} allowMultiple>
+              {Object.entries(data || {}).map(([id, testSuite]) => (
+                <AccordionItem>
+                  <AccordionButton>
+                    <Box flex='1' textAlign='left'>
+                      <TestSuiteComponent testSuite={testSuite} key={id} />
+                    </Box>
+                    <AccordionIcon />
+                  </AccordionButton>
+                  <AccordionPanel pb={4}>
+                    <TestPlansComponent test_plans={testSuite.test_plans} />
+                  </AccordionPanel>
+                </AccordionItem>
+              ))}
+            </Accordion>
           </>
       }
     </div>
