@@ -43,20 +43,22 @@ const { setData, setError, setIsLoading } = apiGetRequestSlice.actions
 export const reducerPath = apiGetRequestSlice.name
 export const reducer = apiGetRequestSlice.reducer
 
-export const useApiGet = <T>(endpoint: string) => {
-    const reducerPath = endpoint.replace("/", "")
+export const useApiGet = <T, V>(endpoint: string, transform: (data: T) => V) => {
+    const reducerPath = endpoint
 
     const dispatch = useDispatch()
-    const { data, error, isLoading } = useSelector((state: any) => state.getRequest[endpoint] || {}) as ApiResponse<T>
+    const { data, error, isLoading } = useSelector((state: any) => state.getRequest[endpoint] || {}) as ApiResponse<V>
 
     const get = async () => {
         dispatch(setIsLoading({ endpoint, isLoading: true }));
         try {
             const res = await fetch(baseUrl + endpoint);
             const data = await res.json() as T;
-            dispatch(setData({ endpoint, data }));
+            const transformed = transform(data)
+            dispatch(setData({ endpoint, data: transformed }));
         } catch (error) {
-            dispatch(setError({ endpoint, error }));
+            console.error(error)
+            dispatch(setError({ endpoint, error: "request failed" }));
         }
         dispatch(setIsLoading({ endpoint, isLoading: false }));
     };
@@ -67,3 +69,7 @@ export const useApiGet = <T>(endpoint: string) => {
 
     return { data, error, isLoading, reducerPath };
 };
+
+export const endpoints = {
+    test_suites: "test_suites"
+}

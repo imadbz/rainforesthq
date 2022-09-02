@@ -1,10 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 
-import { reducer, reducerPath } from './api'
+import { reducer as apiGetRequestReducer, reducerPath as apiGetRequestReducerPath } from './api'
 
 export const store = configureStore({
     reducer: {
-        [reducerPath]: reducer,
+        [apiGetRequestReducerPath]: apiGetRequestReducer,
+        // dirty: reducer,
     },
 })
 
