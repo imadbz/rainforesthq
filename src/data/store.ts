@@ -1,12 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit'
 
 import { reducer as apiGetRequestReducer, reducerPath as apiGetRequestReducerPath } from './api'
+import { disclosureReducerPath, disclosureReducer } from './disclosure'
 import { editReducer, editReducerPath } from './edit'
 
 export const store = configureStore({
     reducer: {
         [apiGetRequestReducerPath]: apiGetRequestReducer,
         [editReducerPath]: editReducer,
+        [disclosureReducerPath]: disclosureReducer
     },
 })
 

@@ -1,12 +1,13 @@
 import React from "react";
 import { EditOutlined } from "@ant-design/icons";
-import ScreenEditTestSuite from "./components/ScreenEditTestSuite";
+import ScreenEditTestSuite from "./components/EditTestSuiteModal";
 import Spinner from "./components/Spinner";
 import { useApiGet } from "./data/api";
 import { TestPlan, TestSuite } from "./types";
 import { useDispatch } from "react-redux";
 import { resetDirtyEdits } from "./data/edit";
-import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Heading } from "@chakra-ui/react";
+import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Button, Heading } from "@chakra-ui/react";
+import { disclosures, openDisclosure } from "./data/disclosure";
 
 
 const TestPlanComponent = ({ plan }: { plan: TestPlan }) => {
@@ -22,6 +23,7 @@ const TestPlansComponent = ({ test_plans }: { test_plans: Record<string, TestPla
 const TestSuiteComponent = ({ testSuite }: { testSuite: TestSuite }) => {
   const dispatch = useDispatch()
 
+
   return (<div key={testSuite.id}>
     <Heading>
       <>
@@ -29,11 +31,14 @@ const TestSuiteComponent = ({ testSuite }: { testSuite: TestSuite }) => {
         |
         {Object.entries(testSuite.test_plans).length}
         |
-        <button onClick={() => {
+        <Button onClick={(e) => {
+          e.preventDefault()
           dispatch(resetDirtyEdits(testSuite.id))
+          dispatch(openDisclosure(disclosures.editModal))
+
         }}>
           <EditOutlined />
-        </button>
+        </Button>
       </>
     </Heading>
 
@@ -60,6 +65,7 @@ function App() {
       {isLoading ? <Spinner />
         : error ? <div>Something went wrong! please refresh to try again.</div>
           : <>
+
             <ScreenEditTestSuite />
 
             <Accordion defaultIndex={[0]} allowMultiple>
