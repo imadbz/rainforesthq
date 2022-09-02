@@ -3,7 +3,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { TestPlan, TestSuite } from "../types";
 import { RootState } from "../data/store";
-import { endpoints } from "../data/api";
+import { endpoints, setTestSuiteById } from "../data/api";
 import { createSelector } from "@reduxjs/toolkit";
 import { resetDirtyEdits, updateTsName, upsertTsPlan } from "../data/edit";
 import deepmerge from "deepmerge";
@@ -12,7 +12,7 @@ const TestPlanEdit = ({ test_suite_id, test_plan_id }: { test_suite_id: string; 
     const dispatch = useDispatch()
 
     const selectTestPlan = createSelector(
-        (state: RootState) => state.getRequest[endpoints.test_suites]?.data,
+        (state: RootState) => state.apiData[endpoints.test_suites]?.data,
         (test_suites: Record<string, TestSuite>) => test_suites[test_suite_id].test_plans?.[test_plan_id],
     )
 
@@ -21,7 +21,7 @@ const TestPlanEdit = ({ test_suite_id, test_plan_id }: { test_suite_id: string; 
     const test_plan_dirty = useSelector((state: RootState) => state.dirty.test_plans?.[test_plan_id])
 
     const test_plan = deepmerge(test_plan_original || {}, test_plan_dirty || {})
-    console.log("test_plan merged", test_plan)
+    // console.log("test_plan merged", test_plan)
 
     const browsers = ["chrome", "firefox", "safari", "edge"]
 
@@ -80,7 +80,7 @@ export default () => {
     const testSuiteId = useSelector((state: RootState) => state.dirty.id!)
 
     const selectTestSuite = createSelector(
-        (state: RootState) => state?.getRequest?.[endpoints.test_suites]?.data,
+        (state: RootState) => state?.apiData?.[endpoints.test_suites]?.data,
         (test_suites: Record<string, TestSuite>) => test_suites?.[testSuiteId],
     )
 
@@ -88,7 +88,7 @@ export default () => {
     const test_suite_dirty = useSelector((state: RootState) => state.dirty)
 
     const test_suite = deepmerge(test_suite_original, test_suite_dirty)
-    console.log("test_suite merged: ", test_suite)
+    // console.log("test_suite merged: ", test_suite)
 
     const plansLen = Object.keys(test_suite?.test_plans || {}).length
 
@@ -101,7 +101,11 @@ export default () => {
     }
 
     const save = () => {
+        const withoutDeletes = { ...test_suite }
+        withoutDeletes.test_plans = Object.fromEntries(Object.entries(withoutDeletes.test_plans).filter(([k, v]) => !v.isDeleted))
 
+        dispatch(setTestSuiteById({ id: testSuiteId.toString(), data: withoutDeletes }))
+        dispatch(resetDirtyEdits(testSuiteId))
     }
 
     return <div>

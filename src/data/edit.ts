@@ -19,7 +19,6 @@ export const dirtySlice = createSlice({
 
                 state.test_plans![key] = { ...state.test_plans![key], ...plan }
             })
-
         },
         resetDirtyEdits: (state, action: PayloadAction<number>) => {
             state = {

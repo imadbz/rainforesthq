@@ -1,3 +1,4 @@
+import { TestSuite } from './../types.d';
 /**
  * 
  * ----- NOTE: in production code we should be using rtk-query or something similar
@@ -20,7 +21,7 @@ export type ApiResponse<T> = {
 const initialState = {} as Record<string, ApiResponse<any>>
 
 export const apiGetRequestSlice = createSlice({
-    name: 'getRequest',
+    name: 'apiData',
     initialState,
     reducers: {
         setData: (state, action: PayloadAction<{ endpoint: string; data: any }>) => {
@@ -35,10 +36,17 @@ export const apiGetRequestSlice = createSlice({
             const { endpoint, isLoading } = action.payload
             state[endpoint] = { ...state[endpoint], isLoading }
         },
+
+        setTestSuiteById: (state, action: PayloadAction<{ id: string; data: TestSuite }>) => {
+            const { id, data } = action.payload
+            state[endpoints.test_suites].data[id] = { ...data }
+        },
     },
 })
 
-const { setData, setError, setIsLoading } = apiGetRequestSlice.actions
+const { setData, setError, setIsLoading, setTestSuiteById } = apiGetRequestSlice.actions
+
+export { setTestSuiteById }
 
 export const reducerPath = apiGetRequestSlice.name
 export const reducer = apiGetRequestSlice.reducer
@@ -47,7 +55,7 @@ export const useApiGet = <T, V>(endpoint: string, transform: (data: T) => V) => 
     const reducerPath = endpoint
 
     const dispatch = useDispatch()
-    const { data, error, isLoading } = useSelector((state: any) => state.getRequest[endpoint] || {}) as ApiResponse<V>
+    const { data, error, isLoading } = useSelector((state: any) => state.apiData[endpoint] || {}) as ApiResponse<V>
 
     const get = async () => {
         dispatch(setIsLoading({ endpoint, isLoading: true }));
