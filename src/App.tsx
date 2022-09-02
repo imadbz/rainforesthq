@@ -1,6 +1,9 @@
+import { EditOutlined } from "@ant-design/icons";
 import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
+import ScreenEditTestSuite from "./components/ScreenEditTestSuite";
+import Spinner from "./components/Spinner";
 import { TestSuite } from "./types";
 
 function App() {
@@ -28,22 +31,24 @@ function App() {
 
   return (
     <div className="App">
-      {isError ? <div>Something went wrong! please refresh to try again.</div> :
-        <>
-          <header className="App-header">
-            <p>
-              Edit <code> src / App.js </code> and save to reload.
-            </p>
-          </header>
-          {testSuites?.map(testSuite => <div key={testSuite.id}>
-            <h3>{testSuite.test_suite_name} | {testSuite.test_plans.length}</h3>
-            {testSuite.test_plans.map((plan, i) =>
-              <div key={i}>
-                <p>{plan.test_name} | {plan.browser} | {plan.instruction_count}</p>
-                <button>edit</button>
-              </div>)}
-          </div>)}
-        </>
+
+      {loading ? <Spinner />
+        : isError ? <div>Something went wrong! please refresh to try again.</div>
+          : <>
+            <header className="App-header">
+              <p>
+                Edit <code> src / App.js </code> and save to reload.
+              </p>
+            </header>
+            <ScreenEditTestSuite />
+            {testSuites?.map(testSuite => <div key={testSuite.id}>
+              <h3>{testSuite.test_suite_name} | {testSuite.test_plans.length} | <button><EditOutlined /></button></h3>
+              {testSuite.test_plans.map((plan, i) =>
+                <div key={i}>
+                  <span>{plan.test_name}</span> | <span>{plan.browser}</span> | <span>{plan.instruction_count}</span>
+                </div>)}
+            </div>)}
+          </>
       }
     </div>
   );

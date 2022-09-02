@@ -5,6 +5,7 @@ export interface TestSuite {
 }
 
 export interface TestPlan {
+    id: number;
     test_name: string;
     browser: string;
     instruction_count: number;
