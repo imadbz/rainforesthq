@@ -1,49 +1,12 @@
 import React from "react";
-import { EditOutlined } from "@ant-design/icons";
 import ScreenEditTestSuite from "./components/EditTestSuiteModal";
 import Spinner from "./components/Spinner";
 import { useApiGet } from "./data/api";
-import { TestPlan, TestSuite } from "./types";
-import { useDispatch } from "react-redux";
-import { resetDirtyEdits } from "./data/edit";
-import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Button, Heading } from "@chakra-ui/react";
-import { disclosures, openDisclosure } from "./data/disclosure";
+import { TestSuite } from "./types";
+import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Center, Container, Heading, HStack, Text, VStack } from "@chakra-ui/react";
+import { TestPlansComponent } from "./components/TestPlansComponent";
+import { TestSuiteComponent } from "./components/TestSuiteComponent";
 
-
-const TestPlanComponent = ({ plan }: { plan: TestPlan }) => {
-  return (<div>
-    <span>{plan.test_name}</span> | <span>{plan.browser}</span> | <span>{plan.instruction_count}</span>
-  </div>)
-}
-
-const TestPlansComponent = ({ test_plans }: { test_plans: Record<string, TestPlan> }) => {
-  return <>{Object.entries(test_plans).map(([i, plan]) => <TestPlanComponent plan={plan} key={i} />)}</>
-}
-
-const TestSuiteComponent = ({ testSuite }: { testSuite: TestSuite }) => {
-  const dispatch = useDispatch()
-
-
-  return (<div key={testSuite.id}>
-    <Heading>
-      <>
-        {testSuite.test_suite_name}
-        |
-        {Object.entries(testSuite.test_plans).length}
-        |
-        <Button onClick={(e) => {
-          e.preventDefault()
-          dispatch(resetDirtyEdits(testSuite.id))
-          dispatch(openDisclosure(disclosures.editModal))
-
-        }}>
-          <EditOutlined />
-        </Button>
-      </>
-    </Heading>
-
-  </div>)
-}
 
 function App() {
   const { data, error, isLoading } =
@@ -61,12 +24,16 @@ function App() {
     )
 
   return (
-    <div className="App">
-      {isLoading ? <Spinner />
-        : error ? <div>Something went wrong! please refresh to try again.</div>
+    <Container maxW="900px" p={"10"}>
+      {isLoading ? <Center w="full" h="full"><Spinner /></Center>
+        : error ? <VStack w="full" h="full">
+          <Heading>Something went wrong!</Heading>
+          <Text>please refresh to try again.</Text>
+        </VStack>
           : <>
 
             <ScreenEditTestSuite />
+            <Heading py={"12"} textAlign="center">Test Suites</Heading>
 
             <Accordion defaultIndex={[0]} allowMultiple>
               {Object.entries(data || {}).map(([id, testSuite]) => (
@@ -85,7 +52,7 @@ function App() {
             </Accordion>
           </>
       }
-    </div>
+    </Container>
   );
 }
 
