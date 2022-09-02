@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App';
+import App from './components/Home';
 import { store } from './data/store'
 import { Provider } from 'react-redux'
 import { ChakraProvider } from '@chakra-ui/react'

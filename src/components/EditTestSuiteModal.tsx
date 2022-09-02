@@ -9,7 +9,7 @@ import deepmerge from "deepmerge";
 import { Box, Button, FormHelperText, FormLabel, HStack, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Radio, RadioGroup, Tag, TagLabel, useDisclosure } from "@chakra-ui/react";
 import { closeDisclosure, disclosures } from "../data/disclosure";
 import EditTestPlan from "./EditTestPlan";
-import { TestSuiteNameInput } from "./TestSuiteNameInput";
+import { TestSuiteNameInput } from "./InputTestSuiteName";
 
 
 export default () => {

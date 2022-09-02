@@ -10,9 +10,9 @@ import deepmerge from "deepmerge";
 import { Badge, Box, Button, FormErrorMessage, FormHelperText, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Tag, TagLabel, useDisclosure, VStack } from "@chakra-ui/react";
 import { closeDisclosure, disclosures } from "../data/disclosure";
 import { isError as isTestSuiteNameError } from "lodash";
-import { BrowsersInput } from "./BrowsersInput";
-import { InstructionCountInput } from "./InstructionCountInput";
-import { PlanNameInput } from "./PlanNameInput";
+import { BrowsersInput } from "./InputBrowsers";
+import { InstructionCountInput } from "./InputInstructionCount";
+import { PlanNameInput } from "./InputPlanName";
 
 export default ({ test_suite_id, test_plan_id }: { test_suite_id: string; test_plan_id: string }) => {
     const dispatch = useDispatch()
