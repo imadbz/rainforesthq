@@ -11,7 +11,7 @@ import { useEffect } from 'react';
 
 const baseUrl = process.env.REACT_APP_API_BASE_URL!;
 
-type ApiResponse<T> = {
+export type ApiResponse<T> = {
     data: T | null,
     error: any | null,
     isLoading: boolean

@@ -10,6 +10,8 @@ export const store = configureStore({
     },
 })
 
+// log
+store.subscribe(() => console.log(store.getState()))
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>

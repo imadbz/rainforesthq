@@ -8,4 +8,6 @@ export interface TestPlan {
     test_name: string;
     browser: string;
     instruction_count: number;
+
+    isDeleted: boolean
 }

@@ -2,7 +2,7 @@ import { TestPlan, TestSuite } from './../types.d';
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-const initialState = {} as Partial<TestSuite>
+const initialState = { id: 1 } as Partial<TestSuite>
 
 export const dirtySlice = createSlice({
     name: 'dirty',
@@ -19,8 +19,15 @@ export const dirtySlice = createSlice({
 
                 state.test_plans![key] = { ...state.test_plans![key], ...plan }
             })
+
         },
-        resetDirtyEdits: (state) => { state = {} }
+        resetDirtyEdits: (state, action: PayloadAction<number>) => {
+            state = {
+                id: action.payload
+            }
+
+            return state;
+        }
     },
 })
 

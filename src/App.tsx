@@ -1,9 +1,30 @@
-import { EditOutlined } from "@ant-design/icons";
 import React from "react";
+import { EditOutlined } from "@ant-design/icons";
 import ScreenEditTestSuite from "./components/ScreenEditTestSuite";
 import Spinner from "./components/Spinner";
 import { useApiGet } from "./data/api";
-import { TestSuite } from "./types";
+import { TestPlan, TestSuite } from "./types";
+import { useDispatch } from "react-redux";
+import { resetDirtyEdits } from "./data/edit";
+
+
+const TestPlanComponent = ({ plan }: { plan: TestPlan }) => {
+  return (<div>
+    <span>{plan.test_name}</span> | <span>{plan.browser}</span> | <span>{plan.instruction_count}</span>
+  </div>)
+}
+
+const TestSuiteComponent = ({ testSuite }: { testSuite: TestSuite }) => {
+  const plans = Object.entries(testSuite.test_plans)
+  const dispatch = useDispatch()
+
+  return (<div key={testSuite.id}>
+    <h3>{testSuite.test_suite_name} | {plans.length} | <button onClick={() => {
+      dispatch(resetDirtyEdits(testSuite.id))
+    }}><EditOutlined /></button></h3>
+    {plans.map(([i, plan]) => <TestPlanComponent plan={plan} key={i} />)}
+  </div>)
+}
 
 function App() {
   const { data, error, isLoading } =
@@ -22,7 +43,6 @@ function App() {
 
   return (
     <div className="App">
-
       {isLoading ? <Spinner />
         : error ? <div>Something went wrong! please refresh to try again.</div>
           : <>
@@ -32,16 +52,7 @@ function App() {
               </p>
             </header>
             <ScreenEditTestSuite />
-            {Object.entries(data || {}).map(([id, testSuite]) => {
-              const plans = Object.entries(testSuite.test_plans)
-              return (<div key={testSuite.id}>
-                <h3>{testSuite.test_suite_name} | {plans.length} | <button><EditOutlined /></button></h3>
-                {plans.map(([i, plan]) =>
-                  <div key={i}>
-                    <span>{plan.test_name}</span> | <span>{plan.browser}</span> | <span>{plan.instruction_count}</span>
-                  </div>)}
-              </div>)
-            })}
+            {Object.entries(data || {}).map(([id, testSuite]) => <TestSuiteComponent testSuite={testSuite} key={id} />)}
           </>
       }
     </div>
