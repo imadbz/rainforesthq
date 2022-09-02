@@ -21,7 +21,6 @@ const TestPlanEdit = ({ test_suite_id, test_plan_id }: { test_suite_id: string; 
     const test_plan_dirty = useSelector((state: RootState) => state.dirty.test_plans?.[test_plan_id])
 
     const test_plan = deepmerge(test_plan_original || {}, test_plan_dirty || {})
-    // console.log("test_plan merged", test_plan)
 
     const browsers = ["chrome", "firefox", "safari", "edge"]
 
@@ -48,9 +47,9 @@ const TestPlanEdit = ({ test_suite_id, test_plan_id }: { test_suite_id: string; 
                 test_plan.isDeleted ? <></> :
                     <div>
                         <label htmlFor={`name_${test_plan_id}`}>name</label>
-                        <input id={`name_${test_plan_id}`} value={test_plan.test_name} onChange={(e) => onNameChanged(e.target.value)} />
+                        <input required id={`name_${test_plan_id}`} value={test_plan.test_name} onChange={(e) => onNameChanged(e.target.value)} />
                         <label htmlFor={`ins_count_${test_plan_id}`}>instruction count</label>
-                        <input type="number" id={`ins_count_${test_plan_id}`} min="0" value={test_plan.instruction_count} onChange={(e) => onCountChanged(e.target.value)} />
+                        <input required type="number" id={`ins_count_${test_plan_id}`} min="0" value={test_plan.instruction_count} onChange={(e) => onCountChanged(e.target.value)} />
 
                         <fieldset>
                             <legend>Select a browser:</legend>
@@ -89,7 +88,6 @@ export default () => {
     const test_suite_dirty = useSelector((state: RootState) => state.dirty)
 
     const test_suite = deepmerge(test_suite_original, test_suite_dirty)
-    // console.log("test_suite merged: ", test_suite)
 
     const plansLen = Object.keys(test_suite?.test_plans || {}).length
 
@@ -101,21 +99,27 @@ export default () => {
         dispatch(resetDirtyEdits(test_suite_dirty.id || 1))
     }
 
-    const save = () => {
+    const submit = () => {
         const withoutDeletes = { ...test_suite }
         withoutDeletes.test_plans = Object.fromEntries(Object.entries(withoutDeletes.test_plans).filter(([k, v]) => !v.isDeleted))
 
         dispatch(setTestSuiteById({ id: testSuiteId.toString(), data: withoutDeletes }))
         dispatch(resetDirtyEdits(testSuiteId))
+
+        // KEEP! per assignement
+        console.log(`Submitted data:\nupdate test_suite with id: ${testSuiteId}\n`, JSON.stringify(withoutDeletes))
     }
 
-    return <div>
+    return <form onSubmit={(e) => {
+        e.preventDefault()
+        submit()
+    }}>
         test suite edit screen
-        <input name="test_suite_name" value={test_suite.test_suite_name} onChange={(e) => dispatch(updateTsName(e.target.value))} />
+        <input required name="test_suite_name" value={test_suite.test_suite_name} onChange={(e) => dispatch(updateTsName(e.target.value))} />
         {Object.entries(test_suite?.test_plans || {}).map(([key, plan]) => <TestPlanEdit key={key} test_plan_id={key} test_suite_id={testSuiteId.toString()} />)}
 
         <button onClick={() => addNewTestPlan()}>Add test plan</button>
-        <button type="submit" onClick={() => save()}>save</button>
+        <button type="submit">save</button>
         <button name="cancel" onClick={() => cancelEdits()}>cancel</button>
-    </div>
+    </form >
 }
