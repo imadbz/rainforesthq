@@ -60,7 +60,8 @@ const TestPlanEdit = ({ test_suite_id, test_plan_id }: { test_suite_id: string; 
                                 return (
                                     <div key={key}>
                                         <input type="radio" id={key} name={key} value={b}
-                                            checked={test_plan?.browser === b} onClick={(e) => onBrowserSelected(e.currentTarget.value)} />
+                                            checked={test_plan?.browser === b}
+                                            onChange={(e) => onBrowserSelected(e.currentTarget.value)} />
                                         <label htmlFor={key}>{displayName}</label>
                                     </div>
                                 )
