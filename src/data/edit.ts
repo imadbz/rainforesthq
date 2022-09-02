@@ -1,31 +1,30 @@
-import { TestSuite } from './../types.d';
-/**
- * 
- * ----- NOTE: in production code we should be using rtk-query or something similar
- *             https://redux-toolkit.js.org/rtk-query/overview
- * 
- */
+import { TestPlan, TestSuite } from './../types.d';
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { useSelector, useDispatch } from 'react-redux';
-import { useEffect } from 'react';
-
-const baseUrl = process.env.REACT_APP_API_BASE_URL!;
-
 
 const initialState = {} as Partial<TestSuite>
 
-export const apiGetRequestSlice = createSlice({
-    name: 'getRequest',
+export const dirtySlice = createSlice({
+    name: 'dirty',
     initialState,
     reducers: {
         updateTsName: (state, action: PayloadAction<string>) => {
             state.test_suite_name = action.payload
         },
+        upsertTsPlan: (state, action: PayloadAction<Record<string, Partial<TestPlan>>>) => {
+            if (!state.test_plans) state.test_plans = {}
+
+            Object.entries(action.payload).forEach(([key, plan]) => {
+                if (!state.test_plans![key]) state.test_plans![key] = {} as TestPlan
+
+                state.test_plans![key] = { ...state.test_plans![key], ...plan }
+            })
+        },
+        resetDirtyEdits: (state) => { state = {} }
     },
 })
 
-// const { setData, setError, setIsLoading } = apiGetRequestSlice.actions
+export const { updateTsName, upsertTsPlan, resetDirtyEdits } = dirtySlice.actions
 
-export const reducerPath = apiGetRequestSlice.name
-export const reducer = apiGetRequestSlice.reducer
+export const editReducerPath = dirtySlice.name
+export const editReducer = dirtySlice.reducer
