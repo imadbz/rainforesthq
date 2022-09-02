@@ -7,8 +7,8 @@ import { TestSuite } from './../types.d';
  */
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 const baseUrl = process.env.REACT_APP_API_BASE_URL!;
 
@@ -46,7 +46,7 @@ export const apiGetRequestSlice = createSlice({
 
 const { setData, setError, setIsLoading, setTestSuiteById } = apiGetRequestSlice.actions
 
-export { setTestSuiteById }
+export { setTestSuiteById };
 
 export const reducerPath = apiGetRequestSlice.name
 export const reducer = apiGetRequestSlice.reducer

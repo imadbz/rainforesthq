@@ -1,4 +1,4 @@
-import { Badge, HStack, Tag, Text } from "@chakra-ui/react";
+import { Badge, HStack, Text } from "@chakra-ui/react";
 import React from "react";
 import { TestPlan } from "../types";
 

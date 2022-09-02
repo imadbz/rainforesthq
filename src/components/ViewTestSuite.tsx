@@ -1,10 +1,10 @@
+import { EditFilled } from "@ant-design/icons";
+import { Badge, Button, Flex, Heading, HStack } from "@chakra-ui/react";
 import React from "react";
-import { EditFilled, EditOutlined } from "@ant-design/icons";
-import { TestSuite } from "../types";
 import { useDispatch } from "react-redux";
-import { resetDirtyEdits } from "../data/edit";
-import { Badge, Box, Button, Flex, Heading, HStack, Tag, Text } from "@chakra-ui/react";
 import { disclosures, openDisclosure } from "../data/disclosure";
+import { resetDirtyEdits } from "../data/edit";
+import { TestSuite } from "../types";
 
 export const TestSuiteComponent = ({ testSuite }: { testSuite: TestSuite; }) => {
     const dispatch = useDispatch();

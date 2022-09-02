@@ -1,9 +1,9 @@
+import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Center, Container, Heading, Text, VStack } from "@chakra-ui/react";
 import React from "react";
-import ScreenEditTestSuite from "./EditTestSuiteModal";
-import Spinner from "./Spinner";
 import { useApiGet } from "../data/api";
 import { TestSuite } from "../types";
-import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Center, Container, Heading, HStack, Text, VStack } from "@chakra-ui/react";
+import ScreenEditTestSuite from "./EditTestSuiteModal";
+import Spinner from "./Spinner";
 import { TestPlansComponent } from "./ViewTestPlans";
 import { TestSuiteComponent } from "./ViewTestSuite";
 

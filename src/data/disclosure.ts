@@ -1,5 +1,3 @@
-import { TestPlan, TestSuite } from '../types';
-
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const initialState = {} as Record<string, boolean>

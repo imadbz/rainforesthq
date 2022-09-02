@@ -1,7 +1,7 @@
+import { FormControl, FormLabel, Input } from "@chakra-ui/react";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { upsertTsPlan } from "../data/edit";
-import { FormControl, FormLabel, Input } from "@chakra-ui/react";
 
 export const PlanNameInput = ({ test_plan_id, test_name }: { test_plan_id: string; test_name: string; }) => {
     const dispatch = useDispatch();

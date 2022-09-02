@@ -1,7 +1,7 @@
+import { FormControl, FormLabel, HStack, Radio, RadioGroup } from "@chakra-ui/react";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { upsertTsPlan } from "../data/edit";
-import { FormControl, FormLabel, HStack, Radio, RadioGroup } from "@chakra-ui/react";
 
 export const BrowsersInput = ({ browser, test_plan_id }: { browser: string; test_plan_id: string; }) => {
     const dispatch = useDispatch();

@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 
 import { reducer as apiGetRequestReducer, reducerPath as apiGetRequestReducerPath } from './api'
-import { disclosureReducerPath, disclosureReducer } from './disclosure'
+import { disclosureReducer, disclosureReducerPath } from './disclosure'
 import { editReducer, editReducerPath } from './edit'
 
 export const store = configureStore({
@@ -11,9 +11,6 @@ export const store = configureStore({
         [disclosureReducerPath]: disclosureReducer
     },
 })
-
-// log
-store.subscribe(() => console.log(store.getState()))
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>

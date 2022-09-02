@@ -1,7 +1,7 @@
+import { FormControl, FormLabel, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper } from "@chakra-ui/react";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { upsertTsPlan } from "../data/edit";
-import { FormControl, FormLabel, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper } from "@chakra-ui/react";
 
 export const InstructionCountInput = ({ test_plan_id, instruction_count }: { test_plan_id: string; instruction_count: number; }) => {
     const dispatch = useDispatch();

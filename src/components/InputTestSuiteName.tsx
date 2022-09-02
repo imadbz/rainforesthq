@@ -1,7 +1,7 @@
+import { FormControl, FormErrorMessage, FormLabel, Input } from "@chakra-ui/react";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { updateTsName } from "../data/edit";
-import { FormControl, FormErrorMessage, FormLabel, Input } from "@chakra-ui/react";
 
 export const TestSuiteNameInput = ({ test_suite_name }: { test_suite_name: string; }) => {
     const dispatch = useDispatch();
